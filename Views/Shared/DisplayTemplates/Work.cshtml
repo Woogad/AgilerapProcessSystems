@@ -1,0 +1,51 @@
+﻿@model Work
+@{
+    bool? isDisplayManage = ViewBag.IsDisplayManage;
+}
+<tr>
+    <td>
+        @Html.DisplayFor(m => m.CreateDate)
+    </td>
+    <td>
+        @Html.DisplayFor(m => m.Project)
+    </td>
+    <td>
+        @Html.DisplayFor(m => m.Name)
+    </td>
+    <td>
+        @Html.DisplayFor(m => m.DueDate)
+    </td>
+    <td>
+        @Html.DisplayFor(m => m.CreateBy.Name)
+    </td>
+    <td>
+        @{
+            IEnumerable<Provider> ModelProviderList = Model.Provider.Where(s => s.IsDelete == false);
+            foreach (var i in ModelProviderList)
+            {
+                if (i == ModelProviderList.Last())
+                {
+                    @Html.DisplayFor(m => i.User.Name)
+                }
+                else
+                {
+                    @Html.DisplayFor(m => i.User.Name)
+                    @Html.DisplayName(" , ")
+                }
+            }
+        }
+    </td>
+    <td>
+        @Html.DisplayFor(m => m.Status.StatusName)
+    </td>
+    <td>
+        @Html.DisplayFor(m => m.Remark)
+    </td>
+    @if (isDisplayManage != false)
+    {
+        <td>
+            @Html.ActionLink("History", "History", "Work", new { id = Model.ID })
+            @Html.ActionLink("Edit", "Edit", "Work", new { id = Model.ID })
+        </td>
+    }
+</tr>

@@ -1,0 +1,102 @@
+﻿@model WorkLog
+
+@if (Model.WorkLogChangeNext != null)
+{
+    <tr>
+        <td>
+            <span class="fw-bolder">@Model.No</span><br /><br />
+            <span class="text-primary fw-bold">Create Date</span><br />
+            <span class="fw-bolder">@Model.CreateDate</span><br /><br />
+        </td>
+        <td>
+            <p>
+                <span class="text-primary fw-bold">Update By</span><br />
+                <span class="fw-bold">@Model.UpdateBy.Name</span>
+            </p>
+            @if (Model.Project != Model.WorkLogChangeNext.Project)
+            {
+                <p>
+                    <span class="text-primary fw-bold">Project</span><br />
+                    <span class="text-danger">@Model.Project</span>
+                    <span class="text-dark fw-bold">--></span>
+                    <span class="text-success">@Model.WorkLogChangeNext.Project</span>
+                </p>
+            }
+            @if (Model.Name != Model.WorkLogChangeNext.Name)
+            {
+                <p>
+                    <span class="text-primary fw-bold">Name</span><br />
+                    <span class="text-danger">@Model.Name</span>
+                    <span class="text-dark fw-bold">--></span>
+                    <span class="text-success">@Model.WorkLogChangeNext.Name</span>
+                </p>
+            }
+            @if (Model.DueDate != Model.WorkLogChangeNext.DueDate)
+            {
+                <p>
+                    <span class="text-primary fw-bold">DueDate</span><br />
+                    <span class="text-danger">@Model.DueDate.Value.ToShortDateString()</span>
+                    <span class="text-dark fw-bold">--></span>
+                    <span class="text-success">@Model.WorkLogChangeNext.DueDate.Value.ToShortDateString()</span>
+                </p>
+            }
+            @if (Model.StatusID != Model.WorkLogChangeNext.StatusID)
+            {
+                <p>
+                    <span class="text-primary fw-bold">Status</span><br />
+                    <span class="text-danger">@Model.Status.StatusName</span>
+                    <span class="text-dark fw-bold">--></span>
+                    <span class="text-success">@Model.WorkLogChangeNext.Status.StatusName</span>
+                </p>
+            }
+            @{
+                List<ProviderLog> oldProviderLogList = Model.ProviderLog.Where(s => s.IsDelete == false).ToList();
+                List<ProviderLog> newProviderLogList = Model.WorkLogChangeNext.ProviderLog.Where(s => s.IsDelete == false).ToList();
+                if (oldProviderLogList.Count() != newProviderLogList.Count())
+                {
+                    <span class="text-primary fw-bold">Provider</span>
+
+                    <br />
+                    string oldUser = "";
+                    string newUser = "";
+                    foreach (var i in oldProviderLogList)
+                    {
+                        if (i == oldProviderLogList.Last())
+                        {
+                            oldUser += i.User.Name;
+                        }
+                        else
+                        {
+                            oldUser += i.User.Name + ",";
+                        }
+                    }
+                    foreach (var i in newProviderLogList)
+                    {
+                        if (i == newProviderLogList.Last())
+                        {
+                            newUser += i.User.Name;
+                        }
+                        else
+                        {
+                            newUser += i.User.Name + ",";
+                        }
+                    }
+                    <span class="text-danger">@oldUser</span>
+                    <span class="text-dark fw-bold">--></span>
+                    <span class="text-success">@newUser</span>
+
+                    <br />
+                }
+            }
+            @if (Model.Remark != Model.WorkLogChangeNext.Remark)
+            {
+                <p>
+                    <span class="text-primary fw-bold">Remark</span><br />
+                    <span class="text-danger">@Model.Remark</span>
+                    <span class="text-dark fw-bold">--></span>
+                    <span class="text-success">@Model.WorkLogChangeNext.Remark</span>
+                </p>
+            }
+        </td>
+    </tr>
+}

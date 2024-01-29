@@ -1,0 +1,67 @@
+﻿@model User
+
+@{
+    string? failMes = ViewBag.FailMes;
+}
+
+@using (Html.BeginForm("Register", "Home", FormMethod.Post, new { }))
+{
+    <label asp-for="Name"></label>
+    <br />
+    <input asp-for="Name" type="text" required />
+    <br />
+    <label asp-for="Email"></label>
+    <br />
+    <input asp-for="Email" type="email" required />
+    <span asp-validation-for="Email" class="text-danger"></span>
+    <br />
+    <label>
+        password<br />
+        <input asp-for="Password" type="password" onkeyup='checkPassword();' required />
+    </label>
+    <span asp-validation-for="Password" class="text-danger"></span>
+    <br>
+    <label>
+        confirm password<br />
+        <input asp-for="ConfirmPassword" type="password" onkeyup='checkPassword();' required />
+        <span id='message'></span>
+    </label>
+    <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+    @if (failMes != null)
+    {
+        <span>@failMes</span>
+    }
+    <br />
+    <input id="submitButton" name="submitButton" type="submit" value="Submit" disabled />
+}
+
+<script>
+    let isPasswordsVerify = false;
+    let passwordInput = @Html.IdFor(m => m.Password)
+        let confirmPasswordInput = @Html.IdFor(m => m.ConfirmPassword)
+            let submitBn = document.querySelector("#submitButton");
+    let message = document.querySelector("#message");
+
+    var checkPassword = function () {
+        if (confirmPasswordInput.value.trim() === "") {
+            message.style.color = 'red';
+            message.innerHTML = 'Required';
+            isPasswordsVerify = false;
+        }
+        else if (passwordInput.value ==
+            confirmPasswordInput.value) {
+            message.style.color = 'green';
+            message.innerHTML = 'matching';
+            isPasswordsVerify = true;
+        } else {
+            message.style.color = 'red';
+            message.innerHTML = 'not matching';
+            isPasswordsVerify = false;
+        }
+        if (!isPasswordsVerify) {
+            submitBn.disabled = true;
+        } else {
+            submitBn.disabled = false;
+        }
+    }
+</script>

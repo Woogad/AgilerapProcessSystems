@@ -1,0 +1,52 @@
+﻿@model IEnumerable<Work>
+@{
+    Work workTitle = new Work();
+}
+
+@using (Html.BeginForm("Create", "Work", FormMethod.Post, new { id = "workForm" }))
+{
+    <table class="table table-bordered">
+        <tr>
+            <th>
+                @Html.DisplayNameFor(m => workTitle.CreateDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(m => workTitle.Project)
+            </th>
+            <th>
+                @Html.DisplayNameFor(m => workTitle.Name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(m => workTitle.DueDate)
+            </th>
+            <th>
+            @Html.DisplayNameFor(m=>workTitle.CreateByID)
+            </th>
+            <th>
+                @Html.DisplayNameFor(m => workTitle.Provider)
+            </th>
+            <th>
+                @Html.DisplayNameFor(m => workTitle.Status)
+            </th>
+            <th>
+                @Html.DisplayNameFor(m => workTitle.Remark)
+            </th>
+            <th>
+                Manage
+            </th>
+        </tr>
+        <tbody>
+            @foreach (var work in Model)
+            {
+                if (work == Model.Last())
+                {
+                    @Html.EditorFor(m => work)
+                }
+                else
+                {
+                    @Html.DisplayFor(m => work)
+                }
+            }
+        </tbody>
+    </table>
+}

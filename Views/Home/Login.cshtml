@@ -1,0 +1,27 @@
+﻿@model User
+
+@{
+    string? failMes = ViewBag.FailMes;
+}
+<form asp-action="Login" asp-controller="Home" method="post" id="loginForm">
+    <label asp-for="Email"></label>
+    <br />
+    <input type="email" asp-for="Email" />
+    <br />
+    <span asp-validation-for="Email" class="text-danger"></span>
+    <label asp-for="Password"></label>
+    <br />
+    <input type="password" asp-for="Password" />
+    <br />
+    <span asp-validation-for="Password" class="text-danger"></span>
+    @if (failMes != null)
+    {
+        <span>@failMes</span>
+    }
+    <br />
+    <input type="submit" value="Login" />
+</form>
+@* @using (Html.BeginForm("Login", "Home", FormMethod.Post, new { id = "loginForm" }))
+{
+}
+ *@

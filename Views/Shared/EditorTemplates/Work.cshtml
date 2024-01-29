@@ -1,0 +1,101 @@
+﻿@model Work
+
+@{
+    List<SelectListItem> stautsDropdownList = ViewBag.StautsDropdownList;
+    List<SelectListItem> userDropdownList = ViewBag.UserDropdownList;
+}
+
+@Html.HiddenFor(m => m.ID)
+@Html.HiddenFor(m => m.IsDeleted)
+@Html.HiddenFor(m => m.IsSelectedAll)
+@Html.HiddenFor(m => m.GroupProvider)
+@Html.HiddenFor(m => m.CreateDate)
+@Html.HiddenFor(m => m.UpdateDate)
+@Html.HiddenFor(m => m.CreateByID)
+@Html.HiddenFor(m => m.UpdateByID)
+
+<script>
+    document.addEventListener("DOMContentLoaded",
+        () => {
+            $('#select-tops-options').multiselect({
+                buttonClass: 'form-select',
+                nonSelectedText: 'Select Provider',
+                buttonContainer: '<div class="btn-danger" id="select-tops-options-container"></div>',
+                selectedClass: 'active multiselect-selected',
+                numberDisplayed: 5,
+                buttonWidth: '18em',
+                includeSelectAllOption: true,
+                onSelectAll: function (options) {
+                    document.getElementById("work_IsSelectedAll").value = true;
+                },
+                onDeselectAll: function (options) {
+                    document.getElementById("work_IsSelectedAll").value = false;
+                },
+                //includeResetOption: true,
+                //selectAllName: 'select-all-name',
+                onChange: function (option, checked) {
+                    /*
+                     * Not there yet
+                     */
+                    if (checked) {
+                        document.querySelectorAll(`[value="${$(option[0])[0].value}"]`)[1].ariaChecked = "true";
+                        document.querySelectorAll(`[value="${$(option[0])[0].value}"]`)[0].ariaChecked = "true";
+                    } else {
+                        document.querySelectorAll(`[value="${$(option[0])[0].value}"]`)[1].ariaChecked = "false";
+                        document.querySelectorAll(`[value="${$(option[0])[0].value}"]`)[0].ariaChecked = "false";
+                    }
+
+                    //$("#select-tops-options").multiselect('deselect', '1');
+                    var toppings = $('#select-tops-options option:selected');
+
+                    var selected = [];
+                    $(toppings).each(function (index, item) {
+                        selected.push([$(this).val()]);
+                    });
+
+                    document.getElementById("work_GroupProvider").value = selected.join(',');
+                },
+                templates: {
+                    button:
+                        '<button type="button" class="multiselect dropdown-toggle" ' +
+                        'data-bs-toggle="dropdown"><span class="multiselect-selected-text"></span></button>',
+                    resetButton: '<div class="multiselect-reset text-center p-2"><button type="button" class="btn btn-sm btn-danger"></button></div>'
+                }
+            });
+
+        });
+</script>
+<div>
+    @Html.EditorFor(m => m.Provider)
+</div>
+<tr>
+    <td>
+        @Html.EditorFor(m => m.CreateDate)
+    </td>
+    <td>
+        <input type="text" asp-for="Project" class="form-control" />
+    </td>
+    <td>
+        <input type="text" asp-for="Name" class="form-control" />
+    </td>
+    <td>
+        @Html.EditorFor(m => m.DueDate)
+    </td>
+    <td>
+        @Html.DropDownListFor(m => m.CreateByID, userDropdownList, new {disabled = "disabled" })
+    </td>
+    <td>
+        <select id="select-tops-options" required asp-items="userDropdownList" multiple="multiple">
+        </select>
+    </td>
+    <td>
+        @Html.DropDownListFor(m => m.StatusID, stautsDropdownList, new { })
+    </td>
+    <td>
+        <input type="text" asp-for="Remark" class="form-control" />
+    </td>
+    <td>
+        <input type="submit" value="Submit" class="btn-success" /><br />
+        <input asp-action="Index" asp-controller="Work" type="submit" value="Cancel" class="btn-danger" />
+    </td>
+</tr>
